@@ -36,7 +36,7 @@
         <h3>Modificación de Libro</h3>
         <br>
         <div class="contenedor-centrado" id="app">
-            <form @submit.prevent="obtenerLibros">
+            <form @submit.prevent="obtenerLibro">
                 <label for="codigo">Código:</label>
                 <input type="text" v-model="codigo" required><br>
                 <button type="submit">Modificar Libro</button>
@@ -69,7 +69,7 @@
                     <input type="file" id="nuevaImagen" @change="seleccionarImagen"><br>
 
                     <label for="enlace">enlace:</label>
-                    <input type="file" id="enlace @change="enlace"><br>
+                    <input type="file" id="enlace" @change="enlace"><br>
 
 
                         <button type="submit">Guardar Cambios</button>
@@ -96,109 +96,131 @@
         Derechos reservados - 2023
     </footer>
     <script src="./js/scripts.js"></script>
+
+
+
     <script src="https://unpkg.com/vue@next"></script>
     <script>
-        const URL = "http://127.0.0.1:5000/";
+        const URL = "https://flask-production-5b3a.up.railway.app/"
+      
 
+        //Vue.createApp para crear nuestra aplicación Vue.
         const app = Vue.createApp({
-
-            //Dentro de data(), definimos las propiedades que serán utilizadas en nuestra aplicación: codigo para almacenar el código del libro, mostrarDatoslibro para controlar la visibilidad del formulario de modificación, y descripcion, cantidad y precio para almacenar los datos del libro seleccionado.
+            
+            //La función data devuelve un objeto que contiene las siguientes propiedades: 
             data() {
                 return {
-                    codigo: '',
-                    titulo: '',
                     autor: '',
+                    codigo: '',
                     editorial: '',
-                    imagen_url: '',
-                    imagenSeleccionada: null,
-                    imagenUrlTemp: null,
                     enlace: '',
-                    mostrarDatosLibro: false,
+                    imagen_url: '',
+                    titulo: '', //mostrarDatosProducto para controlar la visibilidad del formulario de modificación.
                 };
             },
-            methods: {
-                //Se ejecuta cuando se envía el formulario de consulta. En este método, utilizamos fetch para realizar una solicitud GET a la API y obtener los datos del libro correspondiente al código ingresado.
-                obtenerLibro() {
-                    fetch(URL + 'Libros/' + this.codigo)
 
-                        //Verificamos si la respuesta de la solicitud es exitosa (código de respuesta 200-299). Si es así, utilizamos response.json() para parsear la respuesta en formato JSON.
-                        .then(response => {
+            methods: {
+                //Se ejecuta cuando se envía el formulario de consulta. En este método, utilizamos fetch para realizar una solicitud GET a la API y obtener los datos del producto correspondiente al código ingresado.
+                obtenerLibro() {
+                    fetch(URL + 'libros/' + this.codigo)
+                    //Realiza una solicitud de red al servidor para obtener los datos del producto. Usa la URL definida anteriormente y añade 'productos/' seguido del código del producto.
+                        
+                        //Verificamos si la respuesta de la solicitud es exitosa (código de respuesta 200-299). 
+                        .then(response =>  {
+                            //Si es así, utilizamos response.json() para parsear la respuesta en formato JSON.
                             if (response.ok) {
-                                return response.json();
+                                return response.json() //Una vez que la respuesta llega del servidor, se convierte de formato JSON a un objeto JavaScript.
                             } else {
                                 //Si la respuesta es un error, lanzamos una excepción para ser "catcheada" más adelante en el catch.
-                                throw new Error('Error al obtener los datos del libro.')
+                                throw new Error('Error al obtener los datos del producto.')
                             }
                         })
+
+                        //En este bloque, se asignan los datos obtenidos a las variables correspondientes de la aplicación Vue.
                         .then(data => {
-                            this.titulo = data.titulo;
                             this.autor = data.autor;
+                            this.codigo = data.codigo;
                             this.editorial = data.editorial;
-                            this.imagen_url = data.imagen_url;
-                            this.enlace_url = data.enlace_url;
-                            this.mostrarDatosLibro = true;
+                            this.enlace = data.enlace;
+                            this.imagen_url =  data.imagen_url;
+                            this.titulo =  data.titulo;
+                            // this.mostrarDatosProducto = true;
                         })
+
+                        //Si ocurre un error durante la solicitud, se captura y se imprime en la consola.
                         .catch(error => {
-                            alert('Código no encontrado.');
-                        });
+                            alert('Código no encontrado.')
+                        })
                 },
+
+                //Se activa cuando el usuario selecciona una imagen para cargar.
                 seleccionarImagen(event) {
                     const file = event.target.files[0];
                     this.imagenSeleccionada = file;
-                    this.imagenUrlTemp = URL.createObjectURL(file);
+                    this.imagenUrlTemp = URL.createObjectURL(file); // Crea una URL temporal para la vista previa
                 },
+
+                //Se usa para enviar los datos modificados del producto al servidor.
                 guardarCambios() {
                     const formData = new FormData();
                     formData.append('codigo', this.codigo);
-                    formData.append('titulo', this.titulo);
-                    formData.append('autor', this.autor);
-                    formData.append('editorial', this.editorial);
-                    formData.append('imagen', this.imagen);
-                    formData.append('enlace', this.enlace);
+                    formData.append('descripcion', this.descripcion);
+                    formData.append('cantidad', this.cantidad);
+                    formData.append('proveedor', this.proveedor);
+                    formData.append('precio', this.precio);
 
-
+                    //Si se ha seleccionado una imagen nueva, la añade al formData. 
                     if (this.imagenSeleccionada) {
                         formData.append('imagen', this.imagenSeleccionada, this.imagenSeleccionada.name);
                     }
 
                     //Utilizamos fetch para realizar una solicitud PUT a la API y guardar los cambios.
-                    fetch(URL + 'libro/' + this.codigo, {
+                    fetch(URL + 'productos/' + this.codigo, {
                         method: 'PUT',
-                        body: formData,
+                        body: formData, //Dado que formData puede contener archivos, no se utiliza JSON.
                     })
                         .then(response => {
+                            //Si la respuesta es exitosa, utilizamos response.json() para parsear la respuesta en formato JSON.
                             if (response.ok) {
-                                return response.json();
+                                return response.json()
                             } else {
                                 //Si la respuesta es un error, lanzamos una excepción.
-                                throw new Error('Error al guardar los cambios del libro.')
+                                throw new Error('Error al guardar los cambios del producto.')
                             }
                         })
+
+                        //Respuesta OK, muestra una alerta informando que el producto se agregó correctamente y limpia los campos del formulario para que puedan ser utilizados para un nuevo producto.
                         .then(data => {
-                            alert('libro actualizado correctamente.');
+                            alert('Producto actualizado correctamente.');
                             this.limpiarFormulario();
                         })
+
+                        // En caso de error, mostramos una alerta con un mensaje de error.
                         .catch(error => {
                             console.error('Error:', error);
-                            alert('Error al actualizar el libro.');
+                            alert('Error al actualizar el producto.');
                         });
                 },
+
+                //Restablece todas las variables relacionadas con el formulario a sus valores iniciales, lo que efectivamente "limpia" el formulario.
                 limpiarFormulario() {
                     this.codigo = '';
-                    this.titulo = '';
-                    this.autor = '';
-                    this.editorial= '';
+                    this.descripcion = '';
+                    this.cantidad = '';
+                    this.precio = '';
                     this.imagen_url = '';
                     this.imagenSeleccionada = null;
-                    this.imagenUrlTemp = null; 
-                    this.enlace_url = '';
-                    this.mostrarDatosLibro = false;
+                    this.imagenUrlTemp = null;
+                    // this.mostrarDatosProducto = false;
                 }
-            },
+            }
         });
+
+        //Cuando se llama a app.mount('#app'), Vue busca en el documento HTML un elemento con el id app. Vue entonces toma el control de este elemento y de todo su contenido. Esto significa que Vue puede reaccionar a los cambios en sus datos y actualizar automáticamente el HTML en este elemento. También maneja eventos, como clicks o entradas de formulario, y actualiza los datos según las interacciones del usuario.
 
         app.mount('#app');
     </script>
+
 
 </body>
 

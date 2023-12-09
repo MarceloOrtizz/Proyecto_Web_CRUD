@@ -99,6 +99,16 @@ def listar_libros():
     libros = biblioteca.listar_libros()
     return jsonify(libros)
 
+
+@app.route("/libros/<int:codigo>", methods=["GET"])
+def mostrar_libro(codigo):
+    libro = biblioteca.consultar_libro(codigo)
+    if libro:
+        return jsonify(libro), 200
+    else:
+        return "Libro no encontrado", 404
+
+
 @app.route("/libros", methods=["POST"])
 def agregar_libro():
     codigo = request.form['codigo']
