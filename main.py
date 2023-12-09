@@ -134,10 +134,10 @@ def agregar_libro():
 def modificar_libro(codigo):
     nuevo_titulo = request.form.get("titulo")
     nuevo_autor = request.form.get("autor")
-    nueva_imagen = request.files['imagen']
-    nombre_imagen = secure_filename(nueva_imagen.filename)
+    nueva_imagen = request.form.get("imagen")
+    # nombre_imagen = secure_filename(nueva_imagen.filename)
    
-    if biblioteca.modificar_libro(codigo, nuevo_titulo, nuevo_autor, "nueva_editorial", nombre_imagen, "nuevo_enlace"):
+    if biblioteca.modificar_libro(codigo, nuevo_titulo, nuevo_autor, "nueva_editorial", nueva_imagen, "nuevo_enlace"):
         return jsonify({"mensaje": "Libro modificado"}), 200
     else:
         return jsonify({"mensaje": "Libro no encontrado"}), 403
