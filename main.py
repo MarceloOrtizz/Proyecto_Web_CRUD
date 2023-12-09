@@ -3,9 +3,6 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import mysql.connector
 from werkzeug.utils import secure_filename
-import os
-import time
-
 
 app = Flask(__name__)
 CORS(app)

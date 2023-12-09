@@ -53,23 +53,10 @@
                     <label for="autorModificar">autor:</label>
                     <input type="text" id="autorModificar" v-model="autor" required><br>
 
-                    <!-- <label for="editorialModificar">editorial:</label>
-                    <input type="text" step="0.01" id="editorialModificar" v-model="editorial" required><br> -->
 
                     <!-- Imagen actual del libro -->
                     <img v-if="imagen_url && !imagenSeleccionada" :src="'./static/' + imagen_url"
                         alt="Imagen del Libro" style="max-width: 200px;">
-
-                        <!-- Vista previa de la nueva imagen seleccionada -->
-                        <img v-if="imagenSeleccionada" :src="imagenUrlTemp" alt="Vista previa de la nueva imagen"
-                            style="max-width: 200px;">
-
-                    <!-- Input para nueva imagen -->
-                    <!-- <label for="nuevaImagen">Nueva Imagen:</label>
-                    <input type="file" id="nuevaImagen" @change="seleccionarImagen"><br>
-
-                    <label for="enlace">enlace:</label>
-                    <input type="file" id="enlace" @change="enlace"><br> -->
 
 
                         <button type="submit">Guardar Cambios</button>
@@ -115,15 +102,15 @@
                     editorial: '',
                     enlace: '',
                     imagen_url: '',
-                    titulo: '', //mostrarDatosProducto para controlar la visibilidad del formulario de modificación.
+                    titulo: '', //mostrarDatosLibro para controlar la visibilidad del formulario de modificación.
                 };
             },
 
             methods: {
-                //Se ejecuta cuando se envía el formulario de consulta. En este método, utilizamos fetch para realizar una solicitud GET a la API y obtener los datos del producto correspondiente al código ingresado.
+                //Se ejecuta cuando se envía el formulario de consulta. En este método, utilizamos fetch para realizar una solicitud GET a la API y obtener los datos del Libro correspondiente al código ingresado.
                 obtenerLibro() {
                     fetch(URL + 'libros/' + this.codigo)
-                    //Realiza una solicitud de red al servidor para obtener los datos del producto. Usa la URL definida anteriormente y añade 'productos/' seguido del código del producto.
+                    //Realiza una solicitud de red al servidor para obtener los datos del Libro. Usa la URL definida anteriormente y añade 'Libros/' seguido del código del Libro.
                         
                         //Verificamos si la respuesta de la solicitud es exitosa (código de respuesta 200-299). 
                         .then(response =>  {
@@ -132,7 +119,7 @@
                                 return response.json() //Una vez que la respuesta llega del servidor, se convierte de formato JSON a un objeto JavaScript.
                             } else {
                                 //Si la respuesta es un error, lanzamos una excepción para ser "catcheada" más adelante en el catch.
-                                throw new Error('Error al obtener los datos del producto.')
+                                throw new Error('Error al obtener los datos del Libro.')
                             }
                         })
 
@@ -160,7 +147,7 @@
                     this.imagenUrlTemp = URL.createObjectURL(file); // Crea una URL temporal para la vista previa
                 },
 
-                //Se usa para enviar los datos modificados del producto al servidor.
+                //Se usa para enviar los datos modificados del Libro al servidor.
                 guardarCambios() {
                     const formData = new FormData();
                     // formData.append('codigo', this.codigo);
@@ -185,33 +172,33 @@
                                 return response.json()
                             } else {
                                 //Si la respuesta es un error, lanzamos una excepción.
-                                throw new Error('Error al guardar los cambios del producto.')
+                                throw new Error('Error al guardar los cambios del Libro.')
                             }
                         })
 
-                        //Respuesta OK, muestra una alerta informando que el producto se agregó correctamente y limpia los campos del formulario para que puedan ser utilizados para un nuevo producto.
+                        //Respuesta OK, muestra una alerta informando que el Libro se agregó correctamente y limpia los campos del formulario para que puedan ser utilizados para un nuevo Libro.
                         .then(data => {
-                            alert('Producto actualizado correctamente.');
+                            alert('Libro actualizado correctamente.');
                             this.limpiarFormulario();
                         })
 
                         // En caso de error, mostramos una alerta con un mensaje de error.
                         .catch(error => {
                             console.error('Error:', error);
-                            alert('Error al actualizar el producto.');
+                            alert('Error al actualizar el Libro.');
                         });
                 },
 
                 //Restablece todas las variables relacionadas con el formulario a sus valores iniciales, lo que efectivamente "limpia" el formulario.
                 limpiarFormulario() {
+                    this.autor = '';
                     this.codigo = '';
-                    this.descripcion = '';
-                    this.cantidad = '';
-                    this.precio = '';
+                    this.editorial = '';
+                    this.enlace = '';
                     this.imagen_url = '';
-                    this.imagenSeleccionada = null;
-                    this.imagenUrlTemp = null;
+                    this.titulo = '';
                     this.mostrarDatosLibro = false;
+
                 }
             }
         });
