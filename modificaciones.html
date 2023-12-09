@@ -53,8 +53,8 @@
                     <label for="autorModificar">autor:</label>
                     <input type="text" id="autorModificar" v-model="autor" required><br>
 
-                    <label for="editorialModificar">editorial:</label>
-                    <input type="text" step="0.01" id="editorialModificar" v-model="editorial" required><br>
+                    <!-- <label for="editorialModificar">editorial:</label>
+                    <input type="text" step="0.01" id="editorialModificar" v-model="editorial" required><br> -->
 
                     <!-- Imagen actual del libro -->
                     <img v-if="imagen_url && !imagenSeleccionada" :src="'./static/' + imagen_url"
@@ -65,11 +65,11 @@
                             style="max-width: 200px;">
 
                     <!-- Input para nueva imagen -->
-                    <label for="nuevaImagen">Nueva Imagen:</label>
+                    <!-- <label for="nuevaImagen">Nueva Imagen:</label>
                     <input type="file" id="nuevaImagen" @change="seleccionarImagen"><br>
 
                     <label for="enlace">enlace:</label>
-                    <input type="file" id="enlace" @change="enlace"><br>
+                    <input type="file" id="enlace" @change="enlace"><br> -->
 
 
                         <button type="submit">Guardar Cambios</button>
@@ -144,7 +144,7 @@
                             this.enlace = data.enlace;
                             this.imagen_url =  data.imagen_url;
                             this.titulo =  data.titulo;
-                            // this.mostrarDatosProducto = true;
+                            this.mostrarDatosLibro = true;
                         })
 
                         //Si ocurre un error durante la solicitud, se captura y se imprime en la consola.
@@ -163,19 +163,18 @@
                 //Se usa para enviar los datos modificados del producto al servidor.
                 guardarCambios() {
                     const formData = new FormData();
-                    formData.append('codigo', this.codigo);
-                    formData.append('descripcion', this.descripcion);
-                    formData.append('cantidad', this.cantidad);
-                    formData.append('proveedor', this.proveedor);
-                    formData.append('precio', this.precio);
+                    // formData.append('codigo', this.codigo);
+                    formData.append('titulo', this.titulo);
+                    formData.append('autor', this.autor);
+                    formData.append('imagen', this.imagen);
 
                     //Si se ha seleccionado una imagen nueva, la añade al formData. 
-                    if (this.imagenSeleccionada) {
-                        formData.append('imagen', this.imagenSeleccionada, this.imagenSeleccionada.name);
-                    }
+                    // if (this.imagenSeleccionada) {
+                    //     formData.append('imagen', this.imagenSeleccionada, this.imagenSeleccionada.name);
+                    // }
 
                     //Utilizamos fetch para realizar una solicitud PUT a la API y guardar los cambios.
-                    fetch(URL + 'productos/' + this.codigo, {
+                    fetch(URL + 'libros/' + this.codigo, {
                         method: 'PUT',
                         body: formData, //Dado que formData puede contener archivos, no se utiliza JSON.
                     })
@@ -211,7 +210,7 @@
                     this.imagen_url = '';
                     this.imagenSeleccionada = null;
                     this.imagenUrlTemp = null;
-                    // this.mostrarDatosProducto = false;
+                    this.mostrarDatosLibro = false;
                 }
             }
         });

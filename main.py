@@ -138,7 +138,6 @@ def modificar_libro(codigo):
     nombre_imagen = secure_filename(nueva_imagen.filename)
    
     if biblioteca.modificar_libro(codigo, nuevo_titulo, nuevo_autor, "nueva_editorial", nombre_imagen, "nuevo_enlace"):
-        nueva_imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
         return jsonify({"mensaje": "Libro modificado"}), 200
     else:
         return jsonify({"mensaje": "Libro no encontrado"}), 403
