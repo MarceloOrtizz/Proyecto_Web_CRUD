@@ -1,6 +1,6 @@
 # Instalar con pip install Flask
 from flask import Flask, request, jsonify, render_template
-# from flask_cors import CORS
+from flask_cors import CORS
 import mysql.connector
 from werkzeug.utils import secure_filename
 import os
@@ -8,7 +8,7 @@ import time
 
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 class BibliotecaLibros:  # Cambié el nombre de la clase a BibliotecaLibros
     def __init__(self, host, user, password, database, port):
