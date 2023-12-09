@@ -1,6 +1,6 @@
 # Instalar con pip install Flask
 from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
+# from flask_cors import CORS
 import mysql.connector
 from werkzeug.utils import secure_filename
 import os
