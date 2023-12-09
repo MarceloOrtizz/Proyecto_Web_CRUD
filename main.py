@@ -8,7 +8,7 @@ import time
 
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 class BibliotecaLibros:  # Cambié el nombre de la clase a BibliotecaLibros
     def __init__(self, host, user, password, database, port):
