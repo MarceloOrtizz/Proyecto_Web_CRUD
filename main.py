@@ -100,13 +100,13 @@ def listar_libros():
     return jsonify(libros)
 
 
-@app.route("/libros/<int:codigo>", methods=["GET"])
-def mostrar_libro(codigo):
-    libro = biblioteca.consultar_libro(codigo)
-    if libro:
-        return jsonify(libro), 201
-    else:
-        return "Libro no encontrado", 404
+# @app.route("/libros/<int:codigo>", methods=["GET"])
+# def mostrar_libro(codigo):
+#     libro = biblioteca.consultar_libro(codigo)
+#     if libro:
+#         return jsonify(libro), 201
+#     else:
+#         return "Libro no encontrado", 404
 
 
 @app.route("/libros", methods=["POST"])
@@ -134,41 +134,41 @@ def agregar_libro():
         return jsonify({"mensaje": "Libro ya existe."}), 400
     
 
-@app.route("/libros/<int:codigo>", methods=["PUT"])
-def modificar_libro(codigo):
-    nuevo_titulo = request.form.get("titulo")
-    nuevo_autor = request.form.get("autor")
-    # nueva_editorial = request.form.get("editorial")
-    nueva_imagen = request.files['imagen']
-    # nuevo_enlace = request.form.get("enlace")
+# @app.route("/libros/<int:codigo>", methods=["PUT"])
+# def modificar_libro(codigo):
+#     nuevo_titulo = request.form.get("titulo")
+#     nuevo_autor = request.form.get("autor")
+#     # nueva_editorial = request.form.get("editorial")
+#     nueva_imagen = request.files['imagen']
+#     # nuevo_enlace = request.form.get("enlace")
 
-    nombre_imagen = secure_filename(nueva_imagen.filename)
-    nombre_base, extension = os.path.splitext(nombre_imagen)
-    nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
+#     nombre_imagen = secure_filename(nueva_imagen.filename)
+#     nombre_base, extension = os.path.splitext(nombre_imagen)
+#     nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
 
-    libro = biblioteca.consultar_libro(codigo)
-    if libro:
-        imagen_vieja = libro["imagen_url"]
-        ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
+#     libro = biblioteca.consultar_libro(codigo)
+#     if libro:
+#         imagen_vieja = libro["imagen_url"]
+#         ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
 
-        if os.path.exists(ruta_imagen):
-            os.remove(ruta_imagen)
+#         if os.path.exists(ruta_imagen):
+#             os.remove(ruta_imagen)
     
-    if biblioteca.modificar_libro(codigo, nuevo_titulo, nuevo_autor, nueva_editorial, nombre_imagen, nuevo_enlace):
-        nueva_imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
-        return jsonify({"mensaje": "Libro modificado"}), 200
-    else:
-        return jsonify({"mensaje": "Libro no encontrado"}), 403
+#     if biblioteca.modificar_libro(codigo, nuevo_titulo, nuevo_autor, "nueva_editorial", nombre_imagen, "nuevo_enlace"):
+#         nueva_imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
+#         return jsonify({"mensaje": "Libro modificado"}), 200
+#     else:
+#         return jsonify({"mensaje": "Libro no encontrado"}), 403
 
 @app.route("/libros/<int:codigo>", methods=["DELETE"])
 def eliminar_libro(codigo):
-    libro = biblioteca.consultar_libro(codigo)
-    if libro:
-        imagen_vieja = libro["imagen_url"]
-        ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
+    # libro = biblioteca.consultar_libro(codigo)
+    # if libro:
+        # imagen_vieja = libro["imagen_url"]
+        # ruta_imagen = os.path.join(RUTA_DESTINO, imagen_vieja)
 
-        if os.path.exists(ruta_imagen):
-            os.remove(ruta_imagen)
+        # if os.path.exists(ruta_imagen):
+        #     os.remove(ruta_imagen)
 
     if biblioteca.eliminar_libro(codigo):
         return jsonify({"mensaje": "Libro eliminado"}), 200
