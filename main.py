@@ -122,11 +122,11 @@ def agregar_libro():
     libro = biblioteca.consultar_libro(codigo)
     if not libro:
         nombre_imagen = secure_filename(imagen.filename)
-        nombre_base, extension = os.path.splitext(nombre_imagen)
-        nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
+        # nombre_base, extension = os.path.splitext(nombre_imagen)
+        # nombre_imagen = f"{nombre_base}_{int(time.time())}{extension}"
         
         if  biblioteca.agregar_libro(codigo, titulo, autor, "editorial", nombre_imagen, "enlace"):
-            imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
+            # imagen.save(os.path.join(RUTA_DESTINO, nombre_imagen))
             return jsonify({"mensaje": "Libro agregado correctamente.", "imagen": nombre_imagen}), 201
         else:
             return jsonify({"mensaje": "Error al agregar el libro."}), 500
