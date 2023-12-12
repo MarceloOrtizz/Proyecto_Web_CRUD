@@ -56,16 +56,13 @@ sitio.
 eficiente para garantizar una carga rápida y una experiencia de usuario fluida al
 visualizar la ubicación del instituto.
 
-# 6. Conclusiones
+# 6. Deploy
 
-El proyecto de la Escuela Primaria Malvinas Argentinas ha logrado crear un sitio
-web educativo interactivo y responsivo. La implementación cuidadosa de tecnologías como HTML, CSS, JavaScript y la API de mapas ha permitido ofrecer una experiencia en línea atractiva y funcional para los usuarios.
+Para el despliegue de la parte estática de la página se usó [Netlify](https://www.netlify.com/), que permite crear, alojar y mantener tu sitio web de forma sencilla, como en este caso que está relacionado directamente al repositorio de github.
+ 
+Para la base de datos, y el despliegue del CRUD se utilizó el framework Flask, usando la plataforma de [Railway](https://railway.app/?referralCode=alphasec).  ([guia](https://alphasec.io/how-to-deploy-a-python-flask-app-on-railway/) de como realizar el deploy de usando flask en Railway)
 
 
-
-# flask
-A minimal Flask web application.
-
-For a step-by-step guide to deploying on [Railway](https://railway.app/?referralCode=alphasec), see [this](https://alphasec.io/how-to-deploy-a-python-flask-app-on-railway/) post, or click the button below.
+Sitio: https://malvinas-argentinas.netlify.app/
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/igzwwg?referralCode=alphasec)
